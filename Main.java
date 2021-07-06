@@ -2,55 +2,90 @@ import java.util.Scanner;
 
 class Main {
   
-  
-  boolean player1 = false;
-  boolean player2 = false;
-  static boolean running = false;
 
   public static void main(String[] args) {
     Board board  = new Board(3, 3);
 
     
+    System.out.println("How many players? (1 or 2)");
     Scanner scanner = new Scanner(System.in);
+    int inputGameMode = scanner.nextInt();
 
-    while(true){
-      board.printBoard();      
-      
 
-      boolean error;
-      do{
-        int input = scanner.nextInt();
-        error = board.processInput(input, 'X');
-        if(error){
-          System.out.println("This square is taken, please try again!");
+    if(inputGameMode == 2){
+
+      while(true){
+        board.printBoard();      
+        
+
+        boolean error;
+        do{
+          int input = scanner.nextInt();
+          error = board.processInput(input, 'X');
+          if(error){
+            System.out.println("This square is taken, please try again!");
+          }
+        } while(error);
+        
+        board.printBoard();
+        
+        if(gameState(board) == true){
+          break;
         }
-      } while(error);
-      
-      board.printBoard();
-      
-      if(gameState(board) == true){
-        break;
+
+        // board.calculateMove();
+
+        
+        do{
+          int input = scanner.nextInt();
+          error = board.processInput(input, 'O');
+          if(error){
+            System.out.println("This square is taken, please try again!");
+          }
+        } while(error);
+        
+        
+        
+        
+        
+        if(gameState(board) == true){
+          break;
+        }
       }
 
-      // board.calculateMove();
-
-      
-      do{
-        int input = scanner.nextInt();
-        error = board.processInput(input, 'O');
-        if(error){
-          System.out.println("This square is taken, please try again!");
-        }
-      } while(error);
-      
-      
-      
-      
-      
-      if(gameState(board) == true){
-        break;
-      }
     }
+
+    if(inputGameMode == 1){
+
+      while(true){
+        board.printBoard();      
+        
+
+        boolean error;
+        do{
+          int input = scanner.nextInt();
+          error = board.processInput(input, 'X');
+          if(error){
+            System.out.println("This square is taken, please try again!");
+          }
+        } while(error);
+        
+        board.printBoard();
+        
+        if(gameState(board) == true){
+          break;
+        }
+
+        board.calculateMove();
+        
+        if(gameState(board) == true){
+          break;
+        }
+      }
+
+
+    }
+    
 
 
   }
