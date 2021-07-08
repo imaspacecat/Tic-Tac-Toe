@@ -2,14 +2,45 @@ import java.util.Scanner;
 
 class Main {
   
+  private static int input = 0;
+  private static Scanner scanner = new Scanner(System.in);
 
   public static void main(String[] args) {
+    while(true){
+      playSingleGame();
+
+      System.out.println("Play again? (yes or no)");
+      String StringInput = scanner.nextLine();
+      if(StringInput.contains("y")){
+        // return;
+        }
+      if(StringInput.contains("n")){
+        System.out.println("Tis a pity...");
+        break;
+        }
+    
+    }
+    
+  }
+  public static void playSingleGame() {
     Board board  = new Board(3, 3);
 
     
     System.out.println("How many players? (1 or 2)");
-    Scanner scanner = new Scanner(System.in);
-    int inputGameMode = scanner.nextInt();
+    // Scanner scanner = new Scanner(System.in);
+
+    int inputGameMode = 0;
+    while(true){
+      try{
+        inputGameMode = scanner.nextInt();
+        break;
+      } catch(Exception e){
+        System.out.println("Please input either '1' or '2'!");
+        scanner.next();
+      }
+    
+    }
+    
 
 
     if(inputGameMode == 2){
@@ -21,8 +52,7 @@ class Main {
         boolean error;
         do{
           System.out.println("Player 1 turn!");
-
-          int input = scanner.nextInt();
+          checkInput(scanner);
           error = board.processInput(input, 'X');
           if(error){
             System.out.println("This square is taken, please try again!");
@@ -40,7 +70,7 @@ class Main {
         
         do{
           System.out.println("Player 2 turn!");
-          int input = scanner.nextInt();
+          checkInput(scanner);
           error = board.processInput(input, 'O');
           if(error){
             System.out.println("This square is taken, please try again!");
@@ -59,7 +89,6 @@ class Main {
     }
 
     if(inputGameMode == 1){
-
       while(true){
         board.printBoard();      
         
@@ -67,7 +96,7 @@ class Main {
         boolean error;
         do{
           System.out.println("Your turn!");
-          int input = scanner.nextInt();
+          checkInput(scanner);
           error = board.processInput(input, 'X');
           if(error){
             System.out.println("This square is taken, please try again!");
@@ -77,13 +106,15 @@ class Main {
         board.printBoard();
         
         if(gameState(board) == true){
+          
           break;
         }
 
         board.calculateMove();
         
         if(gameState(board) == true){
-          break;
+          
+        break;
         }
       }
 
@@ -112,8 +143,24 @@ class Main {
       return false;
   }
   
-
-
   
+  static void checkInput(Scanner scanner){
+    while(true){
+      try{
+        input = scanner.nextInt();
 
+        if(input >= 0 && input < 9){
+          break;
+        } else{
+          System.out.println("Please input a number between 0-8!");
+          
+        }
+    
+    } catch(Exception e){
+      System.out.println("Please input an integer between 0-8 (including)!");
+      scanner.next();
+      }
+    }
+
+  }
 }

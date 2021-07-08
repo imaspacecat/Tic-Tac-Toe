@@ -5,6 +5,7 @@ class Board{
   final private int height;
   private char[][] board;
 
+  //Created a contructer
   public Board(int width, int height)
   {
      this.width = width;
@@ -14,7 +15,8 @@ class Board{
      setUpBoard();
   }
 
-
+  //turns the input (a number between 0-8 (including)) into a set of coordinates that can be put //in the 2d array. Before it inputs the char in the array it checks if the space is open.
+  //It returns a boolean which is used in Main to loop until there is no error.
   public boolean processInput(int i, char a){
        
     int squareY = i % 3;
@@ -31,7 +33,7 @@ class Board{
     }
 
   }
-
+  //This is one of the simpler methods which just replaces each space in the array with a '-'
   private void setUpBoard(){
     
     for(int x = 0; x < width; x++){
@@ -41,25 +43,37 @@ class Board{
     }
     
     }
-    
+    //prints the board and adds some lines to make the board fancier
     public void printBoard(){
+      String fmt1 = "     |     |     ";
+      //when formatted '%c' will be replaced with a char 
+      String fmt2 = "  %c  |  %c  |  %c  ";
+      String fmt3 = "_____|_____|_____";
+
+      System.out.println(fmt1);
+      System.out.println(String.format(fmt2, board[0][0], board[0][1], board[0][2]));
+      System.out.println(fmt3);
+
+      System.out.println(fmt1);
+      System.out.println(String.format(fmt2, board[1][0], board[1][1], board[1][2]));
+      System.out.println(fmt3);
+
+      System.out.println(fmt1);
+      System.out.println(String.format(fmt2, board[2][0], board[2][1], board[2][2]));
+      System.out.println(fmt1);
       
-      for(int x = 0; x < height; x++){
-        //for(int x = 0; x < width; x++){
-        String ln = new String(board[x]);
-        System.out.println(ln);
-        //}
-        //System.out.println(); //new line
-      }
+      System.out.println();
+
+
     }
 
 
   private int turnCount = 0;
+  //This function calculates the computers' move.
   public void calculateMove(){
-//https://docs.google.com/document/d/1iEzQWZdhEB93Y5AqpAF7Mj-S50KIOZBD4iTPx7RLCNU/edit
     turnCount++;
 
-    //turn 1
+    //this code only works for the first move of the computer. If the player doesn't put their symbol in the center, the computer does. If the player does put their symbol in the center the computer puts their symbol in the corner. 
     if(turnCount == 1){
       if(board[1][1] == '-'){
         board[1][1] = 'O';
@@ -72,6 +86,7 @@ class Board{
 
     //turn 2-9
     //check win
+    //This code goes over all the open squares and checks if the compute can win this turn. If //it can 
     outer1: for(int x = 0; x < 3; x++){
       for(int y = 0; y < 3; y++){
         if(board[x][y] == '-'){
