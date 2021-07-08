@@ -3,7 +3,7 @@ import java.util.Random;
 class Board{
   final private int width;
   final private int height;
-  final private char[][] board;
+  private char[][] board;
 
   public Board(int width, int height)
   {
@@ -29,10 +29,6 @@ class Board{
     } else {
       return true;
     }
-    
-    
-
-
 
   }
 
@@ -58,30 +54,24 @@ class Board{
     }
 
 
-//  private int[] openSquares(){
-//     /** calculates what squares are open. Outputs an array of integers between 0-8. Checks each 'square'. If it is a '-' then it records the corresponding number and puts it into the array.**/
-
-//     int[] available = new int[9];
-    
-//     int index = 0;
-
-//     for(int x = 0; x < 3; x++){
-//       for(int y = 0; y < 3; y++){
-//         if(board[x][y] == '-'){
-//           int i = 3 * x + y;
-//           available[index] = i;
-//           System.out.println("Square " + available[index] + "is available");
-//           index += 1;
-//           // System.out.println("Available square: " + i);
-//         }
-//       }
-//     }
-//   return available;
-//   }
-
- public void calculateMove(){
+  private int turnCount = 0;
+  public void calculateMove(){
 //https://docs.google.com/document/d/1iEzQWZdhEB93Y5AqpAF7Mj-S50KIOZBD4iTPx7RLCNU/edit
+    turnCount++;
 
+    //turn 1
+    if(turnCount == 1){
+      if(board[1][1] == '-'){
+        board[1][1] = 'O';
+      } else{
+        board[0][0] = 'O';
+      }
+      return;
+    }
+    
+
+    //turn 2-9
+    //check win
     outer1: for(int x = 0; x < 3; x++){
       for(int y = 0; y < 3; y++){
         if(board[x][y] == '-'){
@@ -89,14 +79,16 @@ class Board{
          
           WINSTATE winState = checkGameOver();
           if(winState == WINSTATE.PLAYER_TWO){
-            break outer1;
+            // break outer1;
+            return;
           } else{
             board[x][y] = '-';
-          }
+            }
          
+          }
         }
       }
-
+      //check block
       outer2: for(int a = 0; a < 3; a++){
       for(int b = 0; b < 3; b++){
         if(board[a][b] == '-'){
@@ -105,7 +97,8 @@ class Board{
           WINSTATE winState = checkGameOver();
           if(winState == WINSTATE.PLAYER_ONE){
             board[a][b] = 'O';
-            break outer2;
+            // break outer2;
+            return;
           } else{
             board[a][b] = '-';
           } 
@@ -113,159 +106,81 @@ class Board{
         }
       }
     }
+    
+    
+    
+    char board2[][] = new char[3][3];
+    board2[0] = board[0].clone();    
+    board2[1] = board[1].clone();    
+    board2[2] = board[2].clone();    
 
-    outer3: for(int x1 = 0; x1 < 3; x1++){ //1st
-      for(int y1 = 0; y1 < 3; y1++){
-        if(board[x1][y1] == '-'){
-          board[x1][y1] = 'O';
+    outer3: for(int a = 0; a < 3; a++){
+      for(int b = 0; b < 3; b++){
+        System.out.println("a: " + a + " b: " + b);
+        if(board2[a][b] == '-'){
           
-          for(int x2 = 0; x2 < 3; x2++){ //2nd
-            for(int y2 = 0; y2 < 3; y2++){
-              if(board[x2][y2] == '-'){
-                board[x2][y2] = 'X';
+          int lossCount = 0; 
+          board2[a][b] = 'X';
 
-                for(int x3 = 0; x3 < 3; x3++){ //3rd
-                  for(int y3 = 0; y3 < 3; y3++){
-                    if(board[x3][y3] == '-'){
-                      board[x3][y3] = 'O';
-
-                      for(int x4 = 0; x4 < 3; x4++){ //4th
-                        for(int y4 = 0; y4 < 3; y4++){
-                          if(board[x4][y4] == '-'){
-                            board[x4][y4] = 'X';
-
-                            for(int x5 = 0; x5 < 3; x5++){ //5th
-                              for(int y5 = 0; y5 < 3; y5++){
-                                if(board[x5][y5] == '-'){
-                                  board[x5][y5] = 'O';
-
-                                  for(int x6 = 0; x6 < 3; x6++){ //6th
-                                    for(int y6 = 0; y6 < 3; y6++){
-                                      if(board[x6][y6] == '-'){
-                                        board[x6][y6] = 'X';
-
-                                        for(int x7 = 0; x7 < 3; x7++){ //7th
-                                          for(int y7 = 0; y7 < 3; y7++){
-                                            if(board[x7][y7] == '-'){
-                                              board[x7][y7] = 'O';
-
-                                              for(int x8 = 0; x8 < 3; x8++){ //8th
-                                                for(int y8 = 0; y8 < 3; y8++){
-                                                  if(board[x8][y8] == '-'){
-                                                    board[x8][y8] = 'X';
-
-                                                    for(int x9 = 0; x9 < 3; x9++){ //9th
-                                                      for(int y9 = 0; y9 < 3; y9++){
-                                                        if(board[x9][y9] == '-'){
-                                                          board[x9][y9] = 'O';
-
-                                                  
-
-
-                                      
-                                                          WINSTATE winState = checkGameOver();
-                                                          if(winState == WINSTATE.PLAYER_TWO){
-                                                            break outer3;
-                                                          } else{
-                                                            board[x9][y9] = '-';
-                                                          }
-                                                    
-                                                        }
-                                                      }
-                                                    }
-
-                                                    WINSTATE winState = checkGameOver();
-                                                    if(winState == WINSTATE.PLAYER_ONE){
-                                                      board[x8][y8] = 'O';
-                                                      break outer3;
-                                                    } else{
-                                                      board[x8][y8] = '-';
-                                                    }
-                                              
-                                                  }
-                                                }
-                                              }
-                                                  
-                                              WINSTATE winState = checkGameOver();
-                                              if(winState == WINSTATE.PLAYER_TWO){
-                                                break outer3;
-                                              } else{
-                                                board[x7][y7] = '-';
-                                              }
-                                        
-                                            }
-                                          }
-                                        }
-
-                                        WINSTATE winState = checkGameOver();
-                                        if(winState == WINSTATE.PLAYER_ONE){
-                                          board[x6][y6] = 'O';
-                                          break outer3;
-                                        } else{
-                                          board[x6][y6] = '-';
-                                        }
-                                  
-                                      }
-                                    }
-                                  }
-
-                                  WINSTATE winState = checkGameOver();
-                                  if(winState == WINSTATE.PLAYER_TWO){
-                                    break outer3;
-                                  } else{
-                                    board[x5][y5] = '-';
-                                  }
-                            
-                                }
-                              }
-                            }
-
-                            WINSTATE winState = checkGameOver();
-                            if(winState == WINSTATE.PLAYER_ONE){
-                              board[x4][y4] = 'O';
-                              break outer3;
-                            } else{
-                              board[x4][y4] = '-';
-                            }
-                      
-                          }
-                        }
-                      }
-                          
-                      WINSTATE winState = checkGameOver();
-                      if(winState == WINSTATE.PLAYER_TWO){
-                        break outer3;
-                      } else{
-                        board[x3][y3] = '-';
-                      }
-                
-                    }
-                  }
-                }
-
-                WINSTATE winState = checkGameOver();
+          inner: for(int a2 = 0; a2 < 3; a2++){
+            for(int b2 = 0; b2 < 3; b2++){
+              System.out.println("a2: " + a2 + " b2: " + b2);
+              if(board2[a2][b2] == '-'){
+                board2[a2][b2] = 'X';
+                System.out.println("inside inner loop");
+                WINSTATE winState = checkGameOver(board2);
                 if(winState == WINSTATE.PLAYER_ONE){
-                  board[x2][y2] = 'O';
-                  break outer3;
+                  lossCount++;
+                  System.out.println("lossCount: " + lossCount);
+                  if(lossCount >= 2){
+                    // board2[a2][b2] = 'O';
+                    System.out.println("lossCount is bigger than 2");
+                    board[a2][b2] = 'O';
+                    // break outer3;
+                    return;
+                  }
+                  board2[a2][b2] = '-';
+                  continue inner;
                 } else{
-                  board[x2][y2] = '-';
-                }
-          
+                  board2[a2][b2] = '-';
+                  // System.out.println("replace with '-' inner loop check");
+                } 
               }
+              
+
             }
           }
-         
-          WINSTATE winState = checkGameOver();
-          if(winState == WINSTATE.PLAYER_TWO){
-            break outer3;
+
+
+          WINSTATE winState = checkGameOver(board2);
+          if(winState == WINSTATE.PLAYER_ONE){
+            board2[a][b] = 'O';
+            System.out.println("replace with 'O' outer loop check");
           } else{
-            board[x1][y1] = '-';
-          }
+            board2[a][b] = '-';
+            System.out.println("replace with '-' outer loop check");
+          } 
+
           
+
         }
       }
     }
-    } 
+
+    //Random
+    outer4: for(int a3 = 0; a3 < 3; a3++){
+      for(int b3 = 0; b3 < 3; b3++){
+        if(board[a3][b3] == '-'){
+          board[a3][b3] = 'O';
+          // break outer4;
+          return;
+        }
+      }
+    }
+
+
+        
+    
   } 
 
   private boolean isBoardFull(){
@@ -285,7 +200,7 @@ class Board{
     TIE,
     IN_PROGRESS
   };
-  public WINSTATE checkGameOver(){
+  private WINSTATE checkGameOver(char[][] board){
 
     for(int y = 0; y < 3; y++){
       if(board[y][0] == board[y][1] && board[y][1] == board[y][2] && board[y][0] != '-'){
@@ -340,6 +255,10 @@ class Board{
   }
 
 
+  public WINSTATE checkGameOver(){
+    
+    return checkGameOver(board);
 
+  }
 
 }

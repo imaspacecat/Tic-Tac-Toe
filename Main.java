@@ -20,6 +20,8 @@ class Main {
 
         boolean error;
         do{
+          System.out.println("Player 1 turn!");
+
           int input = scanner.nextInt();
           error = board.processInput(input, 'X');
           if(error){
@@ -37,6 +39,7 @@ class Main {
 
         
         do{
+          System.out.println("Player 2 turn!");
           int input = scanner.nextInt();
           error = board.processInput(input, 'O');
           if(error){
@@ -63,6 +66,7 @@ class Main {
 
         boolean error;
         do{
+          System.out.println("Your turn!");
           int input = scanner.nextInt();
           error = board.processInput(input, 'X');
           if(error){
