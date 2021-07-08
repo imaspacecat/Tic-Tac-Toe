@@ -4,43 +4,35 @@ class Main {
   
   private static int input = 0;
   private static Scanner scanner = new Scanner(System.in);
+  private static int inputGameMode = 0;
 
   public static void main(String[] args) {
     while(true){
-      playSingleGame();
-
-      System.out.println("Play again? (yes or no)");
-      String StringInput = scanner.nextLine();
-      if(StringInput.contains("y")){
-        // return;
-        }
-      if(StringInput.contains("n")){
-        System.out.println("Tis a pity...");
-        break;
-        }
-    
+      runGame();
     }
-    
   }
-  public static void playSingleGame() {
+
+
+  public static void runGame() {
     Board board  = new Board(3, 3);
 
     
-    System.out.println("How many players? (1 or 2)");
-    // Scanner scanner = new Scanner(System.in);
-
-    int inputGameMode = 0;
+    System.out.println("How many players? (1 or 2) type: '3' to quit");
+    
     while(true){
       try{
         inputGameMode = scanner.nextInt();
         break;
       } catch(Exception e){
-        System.out.println("Please input either '1' or '2'!");
+        System.out.println("Please input either '1', '2', or '3'!");
         scanner.next();
       }
     
     }
     
+    if(inputGameMode == 3){
+      System.exit(0);
+    }
 
 
     if(inputGameMode == 2){
@@ -127,20 +119,40 @@ class Main {
 
   public static boolean gameState(Board board){
       
-      Board.WINSTATE winState = board.checkGameOver();
-      if(winState == Board.WINSTATE.PLAYER_ONE){
-        System.out.println("You won! (The computer lost)");
-        return true;
-      } 
-      if(winState == Board.WINSTATE.PLAYER_TWO){
-        System.out.println("Game Over! (You lost)");
-        return true;
-      } 
-      if(winState == Board.WINSTATE.TIE){
-        System.out.println("It's a tie!");
-        return true;
+      if(inputGameMode == 1){
+        Board.WINSTATE winState = board.checkGameOver();
+        if(winState == Board.WINSTATE.PLAYER_ONE){
+          System.out.println("You won! (The computer lost)");
+          return true;
+        } 
+        if(winState == Board.WINSTATE.PLAYER_TWO){
+          System.out.println("Game Over! (You lost)");
+          return true;
+        } 
+        if(winState == Board.WINSTATE.TIE){
+          System.out.println("It's a tie!");
+          return true;
+        }
       }
-      return false;
+      if(inputGameMode == 2){
+        Board.WINSTATE winState = board.checkGameOver();
+        if(winState == Board.WINSTATE.PLAYER_ONE){
+          System.out.println("Player 1 Won!");
+          return true;
+        } 
+        if(winState == Board.WINSTATE.PLAYER_TWO){
+          System.out.println("Player 2 Won!");
+          return true;
+        } 
+        if(winState == Board.WINSTATE.TIE){
+          System.out.println("It's a tie!");
+          return true;
+        }
+      }
+      
+    return false;
+
+      
   }
   
   

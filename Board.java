@@ -15,7 +15,8 @@ class Board{
      setUpBoard();
   }
 
-  //turns the input (a number between 0-8 (including)) into a set of coordinates that can be put //in the 2d array. Before it inputs the char in the array it checks if the space is open.
+  //turns the input (a number between 0-8 (including)) into a set of coordinates that can be put 
+  //in the 2d array. Before it inputs the char in the array it checks if the space is open.
   //It returns a boolean which is used in Main to loop until there is no error.
   public boolean processInput(int i, char a){
        
@@ -86,7 +87,8 @@ class Board{
 
     //turn 2-9
     //check win
-    //This code goes over all the open squares and checks if the compute can win this turn. If //it can 
+    //This code goes over all the open squares and checks if the compute can win this turn. 
+    //If it can it will put their symbol where that can win if not nothing happens and it moves on to the next stage in the algorithm. 
     outer1: for(int x = 0; x < 3; x++){
       for(int y = 0; y < 3; y++){
         if(board[x][y] == '-'){
@@ -94,7 +96,6 @@ class Board{
          
           WINSTATE winState = checkGameOver();
           if(winState == WINSTATE.PLAYER_TWO){
-            // break outer1;
             return;
           } else{
             board[x][y] = '-';
@@ -104,6 +105,7 @@ class Board{
         }
       }
       //check block
+      //This code checks to see if the player can win and if they can the computer blocks them by putting their symbol there.
       outer2: for(int a = 0; a < 3; a++){
       for(int b = 0; b < 3; b++){
         if(board[a][b] == '-'){
@@ -123,7 +125,19 @@ class Board{
     }
     
     
+    /**In order to stop situations where the player can win no matter what (when they have two options to win. For example if there is an 'X' in square 0, 2, and 8). What it does is it checks all the possibilities two moves forward for the player ('X') and if it sees that there are two possible places to win, it replaces the original 'X' with an 'O' to block a double attack from happening.
     
+    Here is an example game where 'X' is the player and 'O' the computer using this stage:
+
+    X--     X--     X--     X--
+    ---  -> -O-  -> -O-  -> -O-
+    ---     ---     -X-     -XO
+
+    This is a game not using this stage:
+    X--     X--     X--     X-O
+    ---  -> -O-  -> -O-  -> -O-  <- Because this situation leads to a loss for the  
+    ---     ---     -X-     -X-     computer.
+    **/ 
     char board2[][] = new char[3][3];
     board2[0] = board[0].clone();    
     board2[1] = board[1].clone();    
@@ -142,16 +156,11 @@ class Board{
               System.out.println("a2: " + a2 + " b2: " + b2);
               if(board2[a2][b2] == '-'){
                 board2[a2][b2] = 'X';
-                System.out.println("inside inner loop");
                 WINSTATE winState = checkGameOver(board2);
                 if(winState == WINSTATE.PLAYER_ONE){
                   lossCount++;
-                  System.out.println("lossCount: " + lossCount);
                   if(lossCount >= 2){
-                    // board2[a2][b2] = 'O';
-                    System.out.println("lossCount is bigger than 2");
                     board[a2][b2] = 'O';
-                    // break outer3;
                     return;
                   }
                   board2[a2][b2] = '-';
@@ -170,10 +179,8 @@ class Board{
           WINSTATE winState = checkGameOver(board2);
           if(winState == WINSTATE.PLAYER_ONE){
             board2[a][b] = 'O';
-            System.out.println("replace with 'O' outer loop check");
           } else{
             board2[a][b] = '-';
-            System.out.println("replace with '-' outer loop check");
           } 
 
           
@@ -183,6 +190,7 @@ class Board{
     }
 
     //Random
+    /**This does the move in the first open square. I did some tests and at the point where none of the previous stages do a move this is the only thing left to do. Usually its when there is going to be a tie.**/ 
     outer4: for(int a3 = 0; a3 < 3; a3++){
       for(int b3 = 0; b3 < 3; b3++){
         if(board[a3][b3] == '-'){
@@ -198,6 +206,7 @@ class Board{
     
   } 
 
+  //this function simply checks to see if the board is full. I use this function to //check if the game is a tie or not.
   private boolean isBoardFull(){
     for(int x = 0; x < 3; x++){
       for(int y = 0; y < 3; y++){
@@ -209,12 +218,15 @@ class Board{
   return true;
   }
   
+  //create an enum that will hold the 4 possible states of the game: player one wins, player two wins, its a tie, or the game is still in progress.
   public enum WINSTATE{
     PLAYER_ONE,
     PLAYER_TWO,
     TIE,
     IN_PROGRESS
   };
+
+  //In this function I check if the game is over.
   private WINSTATE checkGameOver(char[][] board){
 
     for(int y = 0; y < 3; y++){
