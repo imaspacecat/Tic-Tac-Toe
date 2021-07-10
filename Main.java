@@ -16,11 +16,14 @@ class Main {
 
 
   public static void runGame() {
+    //create a board object
     Board board  = new Board(3, 3);
 
     
     System.out.println("How many players? (1 or 2) type: '3' to quit");
     
+    //I use try catch to avoid errors if the input isn't one of the possibilities
+    //if there is an error it will not break and go to catch
     while(true){
       try{
         inputGameMode = scanner.nextInt();
@@ -31,12 +34,12 @@ class Main {
       }
     
     }
-    
+    //stops the program if 3 is inputed
     if(inputGameMode == 3){
       System.exit(0);
     }
 
-
+    //two player mode
     if(inputGameMode == 2){
 
       while(true){
@@ -60,11 +63,11 @@ class Main {
         
         board.printBoard();
         
+        //check if the game is over and if it is I stop the loop
         if(gameState(board) == true){
           break;
         }
 
-        // board.calculateMove();
 
         
         do{
@@ -134,6 +137,7 @@ class Main {
 
   }
 
+  //This function checks what state the game is currently in and acts correspondingly. It returns a boolean value which I use in runGame() to know when to break.
   public static boolean gameState(Board board){
       
       if(inputGameMode == 1){
@@ -172,7 +176,7 @@ class Main {
       
   }
   
-  
+  //This function gets the input and checks it to avoid errors.
   static void checkInput(Scanner scanner){
     while(true){
       try{

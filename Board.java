@@ -238,7 +238,7 @@ class Board{
         } else{
           return WINSTATE.PLAYER_TWO;
         }
-        // return (board[y][0] == 'X')? PLAYER_ONE: PLAYER_TWO;
+        
       } 
     }
 
