@@ -46,6 +46,7 @@ class Board{
     }
     //prints the board and adds some lines to make the board fancier
     public void printBoard(){
+      
       String fmt1 = "     |     |     ";
       //when formatted '%c' will be replaced with a char 
       String fmt2 = "  %c  |  %c  |  %c  ";

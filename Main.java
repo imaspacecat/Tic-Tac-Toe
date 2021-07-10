@@ -7,6 +7,8 @@ class Main {
   private static int inputGameMode = 0;
 
   public static void main(String[] args) {
+    System.out.println("How to play: Input a number between 0-8 (including) to put your symbol ('X' or 'O') there. Don't worry, if you forget what the number is for a corresponding square it is automatically printed after each turn.");
+
     while(true){
       runGame();
     }
@@ -44,6 +46,11 @@ class Main {
         boolean error;
         do{
           System.out.println("Player 1 turn!");
+          System.out.println("Numbers for each square:");
+          System.out.println("012");
+          System.out.println("345");
+          System.out.println("678");
+
           checkInput(scanner);
           error = board.processInput(input, 'X');
           if(error){
@@ -62,6 +69,11 @@ class Main {
         
         do{
           System.out.println("Player 2 turn!");
+          System.out.println("Numbers for each square:");
+          System.out.println("012");
+          System.out.println("345");
+          System.out.println("678");
+
           checkInput(scanner);
           error = board.processInput(input, 'O');
           if(error){
@@ -88,6 +100,11 @@ class Main {
         boolean error;
         do{
           System.out.println("Your turn!");
+          System.out.println("Numbers for each square:");
+          System.out.println("012");
+          System.out.println("345");
+          System.out.println("678");
+
           checkInput(scanner);
           error = board.processInput(input, 'X');
           if(error){
@@ -105,7 +122,7 @@ class Main {
         board.calculateMove();
         
         if(gameState(board) == true){
-          
+        board.printBoard();      
         break;
         }
       }
